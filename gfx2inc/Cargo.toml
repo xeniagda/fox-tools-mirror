@@ -5,7 +5,3 @@ edition = "2021"
 
 [dependencies]
 image = { version = "0.24.2", default-features = false, features = ["png"] }
-
-[build-dependencies]
-anyhow = "1.0"
-vergen = { version = "6", default-features = false, features = ["build", "git"] }

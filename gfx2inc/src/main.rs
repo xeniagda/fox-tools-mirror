@@ -8,7 +8,10 @@ use image::{DynamicImage, GenericImageView, Pixel};
 use image::io::Reader as ImageReader;
 
 fn main() {
-    let version_string = format!("gfx2inc {} ({})", env!("VERGEN_BUILD_SEMVER"), env!("VERGEN_GIT_SHA_SHORT"));
+    let version_string = match (option_env!("NIX_SEMVER"), option_env!("NIX_GIT_SHA_SHORT")) {
+        (Some(semver), Some(sha)) => format!("gfx2inc {semver} ({sha})"),
+        _ => format!("fox32asm (dev)"),
+    };
     println!("{}", version_string);
 
     let args: Vec<String> = env::args().collect();
