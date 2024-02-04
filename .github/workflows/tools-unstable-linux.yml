@@ -12,19 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: cachix/install-nix-action@v22
         with:
-          toolchain: stable
-          override: true
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        working-directory: gfx2inc
-        run: cargo build --release
+        run: nix build -L .#gfx2inc
+
+      - name: Patch
+        run: nix run nixpkgs#patchelf -- result/bin/gfx2inc --set-interpreter /lib64/ld-linux-x86-64.so.2 --output gfx2inc/gfx2inc
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: gfx2inc
-          path: gfx2inc/target/release/gfx2inc
+          path: gfx2inc/gfx2inc
