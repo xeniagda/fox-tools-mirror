@@ -17,7 +17,7 @@
           cargoLock = { lockFile = ./gfx2inc/Cargo.lock; };
 
           NIX_SEMVER = version;
-          NIX_GIT_SHA_SHORT = if self ? rev then builtins.substring 0 7 self.rev else "dirty";
+          NIX_GIT_SHA_SHORT = self.shortRev or self.dirtyShortRev;
         };
         packages.default = packages.gfx2inc;
 
